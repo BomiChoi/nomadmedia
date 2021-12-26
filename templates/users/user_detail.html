@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  {{user_obj.first_name}}'s Profile
+{% endblock page_title %}
+
+
+{% block content %}
+<div class="flex flex-col items-center">
+  <div class="flex flex-col items-center justify-around shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <h2 class="mt-10 font-bold text-3xl text-blue-700">{{user_obj.first_name}} {{user_obj.last_name}}</h2>
+  <span class="text-gray-700 pb-2">{{user.email}}</span>
+  <span class="text-lg font-medium">{{user.bio}}</span>
+  <div class="rounded px-5 py-3 mt-5 border text-gray-700">
+    <div>Language: {{user.language}}</div>
+    <div>Preference: {{user.preference}}</div>
+    <div>Favorite Book Genre: {{user.fav_book_cat}}</div>
+    <div>Favorite Movie Genre: {{user.fav_movie_cat}}</div>
+  </div>
+  <a class="bg-blue-400 hover:bg-blue-600 text-white font-bold mt-4 py-2 px-4 rounded" href="{% url 'users:update' %}">Edit Profile</a>
+  </div>
+  <hr class="w-full my-5" />
+  <div class="flex flex-col items-center">
+    <h3 class="text-2xl text-center text-gray-700 font-medium"><i class="fas fa-heart text-red-600 mr-1"></i>Fav List</h3>
+    <div class="mt-1 mx-10">
+      <h3 class="block text-blue-700 text-lg font-bold mb-5 mt-10">
+        {% if not user.fav_lists.movies.all %}
+          No Movies Found
+        {% else %}
+          Movies
+        {% endif %}
+      </h3>
+      <div class="grid my-5 grid-cols-4 gap-5">
+        {% for movie in user.fav_lists.movies.all %}
+          {% include "mixins/movie.html" with movie=movie %}
+        {% endfor %}
+        </div>
+      <hr />
+    </div>
+    <div class="mt-1 mx-10">
+      <h3 class="block text-blue-700 text-lg font-bold mb-5 mt-10">
+        {% if not user.fav_lists.books.all %}
+          No Books Found
+        {% else %}
+          Books
+        {% endif %}
+      </h3>
+      <div class="grid my-5 grid-cols-4 gap-5">
+      {% for book in user.fav_lists.books.all %}
+        {% include "mixins/book.html" with book=book %}
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
